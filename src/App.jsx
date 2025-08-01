@@ -1,48 +1,81 @@
-import { use, useState } from 'react'
-import viteLogo from '/vite.svg'
+  import { useState } from 'react'
+  import './App.css'
 
-const Square = ({value, onSqaureClick}) => {
+  const Square = ({value, onSquareClick}) => {
 
-  return (
-    <button className='square' onClick={onSqaureClick}>
-      {value}
-    </button>
-  )
-}
-
-export const Board = () => {
-  // we need to lift the state of value and set value up to board, so we dont have to ask every time, wiether each board is clicked or not
-  let [squares, setSquares] = useState(Array(9).fill(null)) // creates a 9 element array of null
-  // now we can pass in the expected value of each square via props!
-  let [isx, setIsx] = useState(true)
-  const handleClick = (i) => {
-    // apparently you have to make a new copy of squares and then change it as react doesn't rerender the component if you mutate (change it directely)
-    let newsquares = squares
-    newsquares[i] = (isx ? "X" : "O") 
-    setSquares(newsquares) // you are changing reference, causing a component rerender, you also cant to sqaures = newsqaures as that is considered mutating
-    console.log(squares[i])
-    setIsx(!isx)
+    return (
+      <button className='square' onClick={onSquareClick}>
+        {value}
+      </button>
+    )
   }
-  return (
-    <div className='container'>
-      <div className='row'>
-        <Square value={squares[0]} onSqaureClick = {() => {handleClick(0)}}/>
-        <Square value={squares[1]} onSqaureClick = {() => {handleClick(1)}}/>
-        <Square value={squares[2]} onSqaureClick = {() => {handleClick(2)}}/>
-      </div>
-      <div className='row'>
-        <Square value={squares[3]} onSqaureClick = {() => {handleClick(3)}}/>
-        <Square value={squares[4]} onSqaureClick = {() => {handleClick(4)}}/>
-        <Square value={squares[5]} onSqaureClick = {() => { handleClick(5)}}/>
-      </div>
-      <div className='row'>
-        <Square value={squares[6]} onSqaureClick = {() => {handleClick(6)}}/>
-        <Square value={squares[7]} onSqaureClick = {() => {handleClick(7)}}/>
-        <Square value={squares[8]} onSqaureClick = {() => {handleClick(8)}}/>
-      </div>
-    </div>
-  )
-}
 
+  const is_winner = (squares) => {
+    // Create arrray of arrays of all possible wining pos sets
+    let win_lines = [
+      // horizontal wins
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      // vertical wins
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      // diagonal wins
+      [0, 4, 8],
+      [2, 4, 6],
+    ]  
+    for (let [a, b, c] of win_lines) { // must use "for...of" if there are multiple variables
+      if (squares[a] != null && squares[a] == squares[b] && squares[b] == squares[c]) {
+        return squares[a]
+      }
+    }
+    return null;
+  }
+
+  export const Board = () => {
+    // we need to lift the state of value and set value up to board, so we dont have to ask every time, wiether each board is clicked or not
+    let [squares, setSquares] = useState(Array(9).fill(null)) // creates a 9 element array of null
+    let [isx, setIsx] = useState(true)
+
+    let status = is_winner(squares);
+
+    const handleClick = (i) => {
+      if (squares[i] != null || is_winner(squares)) return
+      // you have to make a new copy of squares and then change it as react doesn't rerender the component if you mutate (change it directely)
+      let newsquares = squares.slice()
+      newsquares[i] = (isx ? "X" : "O")
+      setSquares(newsquares) // changing reference, causing a component rerender, you cant do sqaures = newsqaures as it is considered mutating state
+      setIsx(!isx)
+      if (is_winner(newsquares)) console.log("winner")
+    }
+
+    if (status) {
+      status = "Winner: " + status
+    } else {
+      status = "Next turn: " + (isx ? "X" : "O")
+    }
+
+    return (
+      <div className='container'>
+        <div className='status'> {status}</div>
+        <div className='row'>
+          <Square value={squares[0]} onSquareClick = {() => {handleClick(0)}}/>
+          <Square value={squares[1]} onSquareClick = {() => {handleClick(1)}}/>
+          <Square value={squares[2]} onSquareClick = {() => {handleClick(2)}}/>
+        </div>
+        <div className='row'>
+          <Square value={squares[3]} onSquareClick = {() => {handleClick(3)}}/>
+          <Square value={squares[4]} onSquareClick = {() => {handleClick(4)}}/>
+          <Square value={squares[5]} onSquareClick = {() => { handleClick(5)}}/>
+        </div>
+        <div className='row'>
+          <Square value={squares[6]} onSquareClick = {() => {handleClick(6)}}/>
+          <Square value={squares[7]} onSquareClick = {() => {handleClick(7)}}/>
+          <Square value={squares[8]} onSquareClick = {() => {handleClick(8)}}/>
+        </div>
+      </div>
+    )
+  }
 
 export default Board
