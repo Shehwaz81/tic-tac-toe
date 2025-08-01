@@ -11,6 +11,12 @@
 .square:hover {
   border: 5px solid red;
 }
+body {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
 
 .container {
   border: 1px solid black;
