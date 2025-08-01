@@ -1,4 +1,4 @@
-  import { useState } from 'react'
+  import { use, useState } from 'react'
   import './App.css'
 
   const Square = ({value, onSquareClick}) => {
@@ -33,24 +33,20 @@
     return null;
   }
 
-  export const Board = () => {
-    // we need to lift the state of value and set value up to board, so we dont have to ask every time, wiether each board is clicked or not
-    let [squares, setSquares] = useState(Array(9).fill(null)) // creates a 9 element array of null
-    let [isx, setIsx] = useState(true)
-
-    let status = is_winner(squares);
+  // we need to lift the state of value and set value up to board, so we dont have to ask every time, wiether each board is clicked or not
+  const Board = ({squares, isx, onplay}) => {
 
     const handleClick = (i) => {
       if (squares[i] != null || is_winner(squares)) return
       // you have to make a new copy of squares and then change it as react doesn't rerender the component if you mutate (change it directely)
       let newsquares = squares.slice()
       newsquares[i] = (isx ? "X" : "O")
-      setSquares(newsquares) // changing reference, causing a component rerender, you cant do sqaures = newsqaures as it is considered mutating state
-      setIsx(!isx)
+      onplay(newsquares) // changing reference, causing a component rerender
     }
-
-    if (status) {
-      status = "Winner: " + status
+    const winner = is_winner(squares);
+    let status;
+    if (winner) {
+      status = "Winner: " + winner
     } else {
       status = "Next turn: " + (isx ? "X" : "O")
     }
@@ -79,4 +75,28 @@
     )
   }
 
-export default Board
+
+export const Game = () => {
+    // move state to new top level function, so you can control history
+    const [isx, setIsx] = useState(true)
+    const [history, setHistory] = useState([Array(9).fill(null)])
+    const currsqaures = history[history.length - 1] // get latest in history
+
+    const handlePlay = (nextsqaures) => {
+      setHistory([...history, nextsqaures])
+      setIsx(!isx)
+    }
+    
+    return (
+      <div className="game">
+        <div className="g-board">
+          <Board squares={currsqaures} isx={isx} onplay={handlePlay}/>
+        </div>
+        <div className='g-info'>
+          <ul></ul>
+        </div>
+      </div>
+    )
+  }
+
+export default Game
