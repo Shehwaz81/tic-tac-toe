@@ -18,10 +18,10 @@ export const Board = () => {
   const handleClick = (i) => {
     // apparently you have to make a new copy of squares and then change it as react doesn't rerender the component if you mutate (change it directely)
     let newsquares = squares
-    newsquares[i] = (is_x ? "X" : "O") 
-    setSquares(newsquares) // you are changing reference, causing a component rerender
+    newsquares[i] = (isx ? "X" : "O") 
+    setSquares(newsquares) // you are changing reference, causing a component rerender, you also cant to sqaures = newsqaures as that is considered mutating
     console.log(squares[i])
-    setIsx()
+    setIsx(!isx)
   }
   return (
     <div className='container'>
