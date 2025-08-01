@@ -1,30 +1,42 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.css'
 
+const Square = () => {
+  let [value, setValue] = useState(null)
+  const handleClick = () => setValue('X')
+  return (
+    <button 
+      className='square' 
+      onClick={handleClick}
+    >
+      {value}
+    </button>
+  )
+}
 
-export const Square = () => {
+export const Board = () => {
+  // we need to lift the state of value and set value up to board, so we dont have to ask every time, wiether each board is clicked or not
+  let [value, setValue] = useState(Array(9).fill(null)) // creates a 9 element array of null
   return (
     <div className='container'>
       <div className='row'>
-        <button className='square'>X</button>
-        <button className='sqaure'>X</button>
-        <button className='sqaure'>X</button>
+        <Square />
+        <Square />
+        <Square />
       </div>
       <div className='row'>
-        <button className='square'>X</button>
-        <button className='sqaure'>X</button>
-        <button className='sqaure'>X</button>
+        <Square />
+        <Square />
+        <Square />
       </div>
       <div className='row'>
-        <button className='square'>X</button>
-        <button className='square'>X</button>
-        <button className='square'>X</button>
+        <Square />
+        <Square />
+        <Square />
       </div>
     </div>
   )
 }
 
 
-export default Square
+export default Board
