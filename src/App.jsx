@@ -1,10 +1,10 @@
   import { use, useState } from 'react'
   import './App.css'
 
-  const Square = ({value, onSquareClick}) => {
-
+  const Square = ({highlight, value, onSquareClick}) => {
+    let style = (highlight ? 'green' : 'white')
     return (
-      <button className='square' onClick={onSquareClick}>
+      <button className='square' style={{backgroundColor: style}} onClick={onSquareClick}>
         {value}
       </button>
     )
@@ -27,13 +27,12 @@
     ]  
     for (let [a, b, c] of win_lines) { // must use "for...of" if there are multiple variables
       if (squares[a] != null && squares[a] == squares[b] && squares[b] == squares[c]) {
-        return squares[a]
+        return [a, b, c]
       }
     }
     return null;
   }
 
-  // we need to lift the state of value and set value up to board, so we dont have to ask every time, wiether each board is clicked or not
   const Board = ({squares, isx, onplay}) => {
 
     const handleClick = (i) => {
@@ -45,30 +44,30 @@
     }
     const winner = is_winner(squares);
     let status;
+    let statusStyle;
     if (winner) {
-      status = "Winner: " + winner
-    } else {
+      status = "Winner: " + squares[winner[0]]
+    } else if (!winner && Array.all){
       status = "Next turn: " + (isx ? "X" : "O")
     }
-
     return (
       <>
         <div className='status' style={{border: `1px solid ${winner ? 'green' : 'red'}`}}> {status}</div>
         <div className='container'>
           <div className='row'>
-            <Square value={squares[0]} onSquareClick = {() => {handleClick(0)}}/>
-            <Square value={squares[1]} onSquareClick = {() => {handleClick(1)}}/>
-            <Square value={squares[2]} onSquareClick = {() => {handleClick(2)}}/>
+            <Square highlight={(winner?.includes(0) ? true : false)} value={squares[0]} onSquareClick = {() => {handleClick(0)}}/>
+            <Square highlight={(winner?.includes(1) ? true : false)} value={squares[1]} onSquareClick = {() => {handleClick(1)}}/>
+            <Square highlight={(winner?.includes(2) ? true : false)} value={squares[2]} onSquareClick = {() => {handleClick(2)}}/>
           </div>
           <div className='row'>
-            <Square value={squares[3]} onSquareClick = {() => {handleClick(3)}}/>
-            <Square value={squares[4]} onSquareClick = {() => {handleClick(4)}}/>
-            <Square value={squares[5]} onSquareClick = {() => { handleClick(5)}}/>
+            <Square highlight={(winner?.includes(3) ? true : false)} value={squares[3]} onSquareClick = {() => {handleClick(3)}}/>
+            <Square highlight={(winner?.includes(4) ? true : false)} value={squares[4]} onSquareClick = {() => {handleClick(4)}}/>
+            <Square highlight={(winner?.includes(5) ? true : false)} value={squares[5]} onSquareClick = {() => {handleClick(5)}}/>
           </div>
           <div className='row'>
-            <Square value={squares[6]} onSquareClick = {() => {handleClick(6)}}/>
-            <Square value={squares[7]} onSquareClick = {() => {handleClick(7)}}/>
-            <Square value={squares[8]} onSquareClick = {() => {handleClick(8)}}/>
+            <Square highlight={(winner?.includes(6) ? true : false)} value={squares[6]} onSquareClick = {() => {handleClick(6)}}/>
+            <Square highlight={(winner?.includes(7) ? true : false)} value={squares[7]} onSquareClick = {() => {handleClick(7)}}/>
+            <Square highlight={(winner?.includes(8) ? true : false)} value={squares[8]} onSquareClick = {() => {handleClick(8)}}/>
           </div>
         </div>
       </>
