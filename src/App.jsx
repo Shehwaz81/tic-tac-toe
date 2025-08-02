@@ -53,7 +53,7 @@
 
     return (
       <>
-        <div className='status'> {status}</div>
+        <div className='status' style={{border: `1px solid ${winner ? 'green' : 'red'}`}}> {status}</div>
         <div className='container'>
           <div className='row'>
             <Square value={squares[0]} onSquareClick = {() => {handleClick(0)}}/>
@@ -82,18 +82,31 @@ export const Game = () => {
     const [history, setHistory] = useState([Array(9).fill(null)])
     const currsqaures = history[history.length - 1] // get latest in history
 
-    const handlePlay = (nextsqaures) => {
-      setHistory([...history, nextsqaures])
+    const handlePlay = (nextSquares) => {
+      setHistory([...history, nextSquares]) // add a new array "nextSqaures" to track history
       setIsx(!isx)
     }
-    
+
+    const Jumpto = (move) => {
+
+    }
+
+    let historyList = history.map((squares, index) => { // element, index of element
+      const descriptionOfEvent = (index === 0 ? "Game Start" : "Go to move #" + index)
+      return ( // must return something, add key for react to extract
+        <li key={index}> 
+          <button onClick={Jumpto(index)}>{descriptionOfEvent}</button>
+        </li>
+      )
+    })
+
     return (
       <div className="game">
         <div className="g-board">
           <Board squares={currsqaures} isx={isx} onplay={handlePlay}/>
         </div>
         <div className='g-info'>
-          <ul></ul>
+          <ul>{historyList}</ul>
         </div>
       </div>
     )
