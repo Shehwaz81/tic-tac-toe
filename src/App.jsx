@@ -47,12 +47,17 @@
     let statusStyle;
     if (winner) {
       status = "Winner: " + squares[winner[0]]
-    } else if (!winner && Array.all){
+      statusStyle = {border: '2px solid green'}
+    } else if (!winner && squares.every(square => square != null)) {
+      status = "Draw!"
+      statusStyle = {border: '2px solid green'}
+    } else {
       status = "Next turn: " + (isx ? "X" : "O")
+      statusStyle = {border: '2px solid blue'}
     }
     return (
       <>
-        <div className='status' style={{border: `1px solid ${winner ? 'green' : 'red'}`}}> {status}</div>
+        <div className='status' style={statusStyle}> {status}</div>
         <div className='container'>
           <div className='row'>
             <Square highlight={(winner?.includes(0) ? true : false)} value={squares[0]} onSquareClick = {() => {handleClick(0)}}/>
