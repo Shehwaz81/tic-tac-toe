@@ -80,22 +80,26 @@ export const Game = () => {
     // move state to new top level function, so you can control history
     const [isx, setIsx] = useState(true)
     const [history, setHistory] = useState([Array(9).fill(null)])
-    const currsqaures = history[history.length - 1] // get latest in history
+    const [currMove, setCurrMove] = useState(0)
+    const currSquares = history[currMove]; // get latest in history
 
     const handlePlay = (nextSquares) => {
-      setHistory([...history, nextSquares]) // add a new array "nextSqaures" to track history
+      const newHistory =  [...history.slice(0, currMove + 1), nextSquares] // add a new array "nextSqaures" to history up to curr pointx
+      setHistory(newHistory)
+      setCurrMove(newHistory.length - 1)
       setIsx(!isx)
     }
 
     const Jumpto = (move) => {
-
+      setCurrMove(move)
+      setIsx(move % 2 === 0) // if the current move is even, than it is x
     }
 
     let historyList = history.map((squares, index) => { // element, index of element
       const descriptionOfEvent = (index === 0 ? "Game Start" : "Go to move #" + index)
       return ( // must return something, add key for react to extract
         <li key={index}> 
-          <button className='history-button' onClick={Jumpto(index)}>{descriptionOfEvent}</button>
+          <button className='history-button' onClick={() => Jumpto(index)}>{descriptionOfEvent}</button>
         </li>
       )
     })
@@ -105,7 +109,7 @@ export const Game = () => {
         <h1>Tic Tac Toe</h1>
         <div className="game">
           <div className="g-board">
-            <Board squares={currsqaures} isx={isx} onplay={handlePlay}/>
+            <Board squares={currSquares} isx={isx} onplay={handlePlay}/>
           </div>
           <div className='info-container'>
             <div className='history'>Time Travel</div>
