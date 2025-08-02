@@ -95,20 +95,26 @@ export const Game = () => {
       const descriptionOfEvent = (index === 0 ? "Game Start" : "Go to move #" + index)
       return ( // must return something, add key for react to extract
         <li key={index}> 
-          <button onClick={Jumpto(index)}>{descriptionOfEvent}</button>
+          <button className='history-button' onClick={Jumpto(index)}>{descriptionOfEvent}</button>
         </li>
       )
     })
 
     return (
-      <div className="game">
-        <div className="g-board">
-          <Board squares={currsqaures} isx={isx} onplay={handlePlay}/>
+      <>
+        <h1>Tic Tac Toe</h1>
+        <div className="game">
+          <div className="g-board">
+            <Board squares={currsqaures} isx={isx} onplay={handlePlay}/>
+          </div>
+          <div className='info-container'>
+            <div className='history'>Time Travel</div>
+            <div className='g-info'>
+              <ul>{historyList}</ul>
+            </div>
+          </div>
         </div>
-        <div className='g-info'>
-          <ul>{historyList}</ul>
-        </div>
-      </div>
+      </>
     )
   }
 
