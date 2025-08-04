@@ -1,3 +1,7 @@
+#root {
+  padding: 50px;
+  border: 2px solid white;
+}
 .square {
   width: 100px;
   height: 100px;
@@ -11,11 +15,68 @@
 .square:hover {
   border: 5px solid red;
 }
-
+body {
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+.status {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+  padding: 5px;
+}
 .container {
   border: 1px solid black;
   display: flex;
   flex-wrap: wrap;
   max-width: 300px;
+}
+.game {
+  display: flex;
+  align-items: center;
+}
+.g-board {
+  display: block;
+}
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+.info-container {
+  margin-left: 20px;
+  padding: 10px;
+  border: 2px solid blue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;         /* Center contents like "History" and ul */
+}
+.history {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.g-info {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  margin: 10px;
+  border: 2px solid white;
+}
+.history-button {
+  font-size: 9px;
+}
+.history-button:hover {
+  color: green;
+}
+li {
+  padding: 2px
+}
+h1 {
+  text-align: center;
+  padding: 10px;
+  border: 5px solid white;
 }
 
