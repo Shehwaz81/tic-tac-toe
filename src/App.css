@@ -1,6 +1,6 @@
 #root {
   padding: 50px;
-  border: 2px solid white;
+  border: 2px solid black;
 }
 .square {
   width: 100px;
@@ -63,7 +63,7 @@ ul {
   text-align: center;
   padding: 10px;
   margin: 10px;
-  border: 2px solid white;
+  border: 2px solid black;
 }
 .history-button {
   font-size: 9px;
@@ -77,6 +77,6 @@ li {
 h1 {
   text-align: center;
   padding: 10px;
-  border: 5px solid white;
+  border: 5px solid black;
 }
 
